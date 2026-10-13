@@ -9,10 +9,21 @@ int main() {
     double mu = 0.5;         // attenuation coefficient (per cm)
     double thickness = 2.0;  // slab thickness (cm)
 
-    double r = uni(rng);     // one random number in (0,1)
-    // TODO: turn r into a free path length
-    // TODO: did this photon make it through the slab?
+    long N = 1000000;        // number of photons
+    long transmitted = 0;    // how many got through
 
-    std::cout << "r = " << r << "\n";
+    for (long i = 0; i < N; i++) {
+        double r = 1.0 - uni(rng);       // never exactly 0, so log is safe
+        double x = -std::log(r) / mu;
+        if (x > thickness) {
+           transmitted++;
+        }
+    }
+
+    double fraction = (double)transmitted/N;
+    double exact = std::exp(-mu*thickness);
+
+    std::cout << "Simulated: " << fraction << "\n";
+    std::cout << "Exact:     " << exact << "\n";
     return 0;
 }

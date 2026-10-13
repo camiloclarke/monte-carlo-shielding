@@ -2,3 +2,4 @@ mc
 *.o
 .DS_Store
 __pycache__/
+conv
